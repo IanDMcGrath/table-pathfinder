@@ -164,8 +164,8 @@ class Graph { // ORIG
         u = found[u];
       }
       stack.push(root);
-      let shortPath = stack.reverse().join(' <-> ');
-      let longPath = stack.reverse();
+      let shortPath = stack.join(' <-> ');
+      let longPath = stack;
       let lines = ['FROM ' + longPath[0]];
       longPath = lines.concat(longPath.map((n, i) => {
         if (i+1 < longPath.length) {

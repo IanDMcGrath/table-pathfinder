@@ -27,6 +27,21 @@ t3.addColumn('id', 'int');
 t3.addColumn('personnelId', 'int');
 t3.addColumn('stationId', 'int');
 
+db1.addTable(t4);
+t4.addColumn('id', 'int');
+t4.addColumn('bogus', 'customDataType');
+t4.addColumn('foo', 'customDataType');
+t4.addColumn('fizz', 'customDataType');
+t4.addColumn('buzz', 'customDataType');
+t4.addColumn('directToYou', 'varChar(10)');
+
+db1.addTable(t5);
+t5.addColumn('id', 'int');
+t5.addColumn('foobar', 'varchar(3200)');
+t5.addColumn('stationId', 'int');
+t5.addColumn('xyz', 'varchar(5)');
+t5.addColumn('abc', 'varchar(60)');
+
 // db1.addTable();
 
 // console.log(db1.getTablesColumns());
@@ -50,15 +65,25 @@ Object.values(db1.tables).forEach(t => {
 
 t1.addJoin(t3, t1.columns.id, t3.columns.personnelId);
 t2.addJoin(t3, t2.columns.id, t3.columns.stationId);
+t4.addJoin(t5, t4.columns.foo, t5.columns.foobar);
+t5.addJoin(t2, t5.columns.stationId, t2.columns.id);
+t4.addJoin(t1, t4.columns.directToYou, t1.columns.address);
 
 g.addJoin(t1.name, t3.name);
 g.addJoin(t2.name, t3.name);
+g.addJoin(t5.name, t4.name);
+g.addJoin(t2.name, t5.name);
+g.addJoin(t1.name, t4.name);
 
 g.tablesData = db1.tables;
 
-let r = g.bfs("personnel", "stations");
-console.log(r.path[0]);
-console.log(r.path[1]);
+let r = g.bfs("2345","stations");
+if (r) {
+  console.log(r.path[0]);
+  console.log(r.path[1]);
+} else {
+  console.log("found none");
+}
 
 // g.addEdge("A","B"); // keys
 // g.addEdge("A","C");
