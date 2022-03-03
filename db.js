@@ -94,8 +94,8 @@ class Table {
     }
   }
 
-  addColumn(name, dataType, match='') {
-    this.columns[name] = new Column(name, this, dataType, match);
+  addColumn(name, dataType) {
+    this.columns[name] = new Column(name, this, dataType);
   }
 
   getColumns() {
@@ -110,11 +110,10 @@ class Table {
 
 class Column {
   // parent table : { col1: {name: '', parent: Table, dataType: '' } }
-  constructor(name, parentTable, dataType, joinId='') {
+  constructor(name, parentTable, dataType) {
     this.name = name;
     this.parent = parentTable;
     this.dataType = dataType;
-    this.joinId = joinId; // the grouping (string) that tables' columns will use to be matched
   }
 
   getPath() {

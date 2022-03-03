@@ -7,26 +7,27 @@ const db1 = new Database('db1');
 const t1 = new Table('personnel');
 const t2 = new Table('stations');
 const t3 = new Table('stationworkers');
-
-const match1 = 'personnelToStationWorkers'
-const match2 = 'stationsToStationWorkers'
+const t4 = new Table('2345');
+const t5 = new Table('987');
 
 db1.addTable(t1);
-t1.addColumn('id', 'int', match1);
+t1.addColumn('id', 'int');
 t1.addColumn('name', 'string');
 t1.addColumn('email', 'string');
 t1.addColumn('address', 'string');
 t1.addColumn('phone', 'string');
 
 db1.addTable(t2);
-t2.addColumn('id', 'int', match2);
+t2.addColumn('id', 'int');
 t2.addColumn('name', 'string');
 t2.addColumn('address', 'string');
 
 db1.addTable(t3);
 t3.addColumn('id', 'int');
-t3.addColumn('personnelId', 'int', match1);
-t3.addColumn('stationId', 'int', match2);
+t3.addColumn('personnelId', 'int');
+t3.addColumn('stationId', 'int');
+
+// db1.addTable();
 
 // console.log(db1.getTablesColumns());
 // t3.columns.personnelId.getPath();
@@ -56,6 +57,7 @@ g.addJoin(t2.name, t3.name);
 g.tablesData = db1.tables;
 
 let r = g.bfs("personnel", "stations");
+console.log(r.path[0]);
 console.log(r.path[1]);
 
 // g.addEdge("A","B"); // keys
