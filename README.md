@@ -1,4 +1,5 @@
 # table-pathfinder
+# WORK IN PROGRESS, USE AT YOUR OWN PERIL
 ## Description
 table-pathfinder is an app that stores user inputed schema's and join rules for many tables and produces the SQL join statements to link selected tables columns together. Pathfinder will take two unrelated tables, and run through a known path to link as many tables as it takes to make the join possible. This app is made so I don't have to double check all my table schemas every time I need to pull data and it's doubly troubly when I have missmatching column names.
 
