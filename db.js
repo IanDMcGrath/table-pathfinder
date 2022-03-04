@@ -13,11 +13,19 @@ normal use -
     BFS - grab all legs and put into the queue - recursive, pass queue to arguments
     should be able to jump to a previously walked table, but not table/column combo
 
-  return all table/column bridges
+  path through all tables with known joins and return shortest path
 
   construct SQL statement
 
   present to user
+*/
+
+/*
+todo:
+JOIN t ON '' = '' AND '' = '' statements
+  change  the this.match[table.name] to return array
+
+add table aliases to SQL return
 */
 
 class Database {
@@ -83,7 +91,7 @@ class Table {
   constructor(name) {
     this.name = name;
     this.columns = {};
-    this.match = {};
+    this.joins = {};
   }
 
   getPath() {
@@ -103,8 +111,16 @@ class Table {
   }
 
   addJoin(table2, col1, col2) { // table1.addMatch(table 2, column 1, column 2) // FROM t1 JOIN t2 ON col1 = col2
-    this.match[table2.name] = {table: table2, column: col2};
-    table2.match[this.name] = {table: this, column: col1};
+    if (this.joins[table2.name]) {
+      this.joins[table2.name].columns.push(col2);
+    } else {
+      this.joins[table2.name] = {table: table2, columns: [col2]};
+    }
+    if (table2.joins[this.name]) {
+      table2.joins[this.name].columns.push(col1);
+    } else {
+      table2.joins[this.name] = {table: this, columns: [col1]};
+    }
   }
 }
 
@@ -173,11 +189,20 @@ class Graph { // ORIG
           let t2 = this.tablesData[longPath[i+1]];
           // console.log(`t1 name = ${t1.name}`);
           // console.log(`t1 name = ${t2.name}`);
-          // console.log(t1.match[t2.name].table.name);
-          // console.log(t2.match[t1.name].table.name);
-          let c1 = t2.match[t1.name].column;
-          let c2 = t1.match[t2.name].column;
-          return 'JOIN ' + t2.getPath() + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
+          // console.log(t1.joins[t2.name].table.name);
+          // console.log(t2.joins[t1.name].table.name);
+          let c1 = t2.joins[t1.name].columns[0];
+          let c2 = t1.joins[t2.name].columns[0];
+          let result = '';
+          result = 'JOIN ' + t2.getPath() + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
+
+          for (let j=1; j < t2.joins[t1.name].columns.length; j++) {
+            c1 = t2.joins[t1.name].columns[j];
+            c2 = t1.joins[t2.name].columns[j];
+            result += '\nAND ' + c1.getPath() + ' = ' + c2.getPath();
+          }
+
+          return result;
         }
       }));
       return [shortPath, longPath.join('\n')];

@@ -66,6 +66,7 @@ Object.values(db1.tables).forEach(t => {
 t1.addJoin(t3, t1.columns.id, t3.columns.personnelId);
 t2.addJoin(t3, t2.columns.id, t3.columns.stationId);
 t4.addJoin(t5, t4.columns.foo, t5.columns.foobar);
+t4.addJoin(t5, t4.columns.fizz, t5.columns.xyz);
 t5.addJoin(t2, t5.columns.stationId, t2.columns.id);
 t4.addJoin(t1, t4.columns.directToYou, t1.columns.address);
 

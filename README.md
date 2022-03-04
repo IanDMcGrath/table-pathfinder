@@ -5,3 +5,6 @@ table-pathfinder is an app that stores user inputed schema's and join rules for 
 
 
 The app will store user data in side data.txt. This file is already a part of the .gitignore for privacy reasons. If the app ships with a demo table, it will be held in an alternate file.
+
+## Development
+node v10.13.0
