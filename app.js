@@ -6,9 +6,9 @@ const { Database, Table, Column, Graph } = db;
 const db1 = new Database('db1');
 const t1 = new Table('personnel');
 const t2 = new Table('stations');
-const t3 = new Table('stationworkers');
-const t4 = new Table('2345');
-const t5 = new Table('987');
+const t3 = new Table('stationWorkers');
+const t4 = new Table('thatsANewTable');
+const t5 = new Table('thatsAlsoNewTable');
 
 db1.addTable(t1);
 t1.addColumn('id', 'int');
@@ -78,7 +78,7 @@ g.addJoin(t1.name, t4.name);
 
 g.tablesData = db1.tables;
 
-let r = g.bfs("2345","stations");
+let r = g.bfs("thatsANewTable","stations");
 if (r) {
   console.log(r.path[0]);
   console.log(r.path[1]);

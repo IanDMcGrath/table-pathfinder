@@ -1,4 +1,7 @@
 
+const util = require("./util.js");
+const { abbreviateName, dupNameIncrement, makeAlias } = util;
+
 /*
 pseudo code:
 normal use -
@@ -170,6 +173,8 @@ class Graph { // ORIG
     const joins = [];
     const found = [];
     joins[root] = 0;
+    const namesInc = {};
+    const namesAlias = {};
 
     const pathfind = (goal, root, found) => {
       const stack = [goal];
@@ -187,6 +192,13 @@ class Graph { // ORIG
         if (i+1 < longPath.length) {
           let t1 = this.tablesData[n];
           let t2 = this.tablesData[longPath[i+1]];
+          let alias1 = makeAlias(namesInc, t1.name, namesAlias);
+          let alias2 = makeAlias(namesInc, t2.name, namesAlias);
+
+          console.log(namesInc);
+
+          console.log(alias1);
+          console.log(alias2);
           // console.log(`t1 name = ${t1.name}`);
           // console.log(`t1 name = ${t2.name}`);
           // console.log(t1.joins[t2.name].table.name);
@@ -194,7 +206,7 @@ class Graph { // ORIG
           let c1 = t2.joins[t1.name].columns[0];
           let c2 = t1.joins[t2.name].columns[0];
           let result = '';
-          result = 'JOIN ' + t2.getPath() + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
+          result = 'JOIN ' + t2.getPath() + alias1 + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
 
           for (let j=1; j < t2.joins[t1.name].columns.length; j++) {
             c1 = t2.joins[t1.name].columns[j];
@@ -231,83 +243,6 @@ class Graph { // ORIG
     return false;
   }
 }
-
-// class Graph {
-//   constructor() {
-//     this.tables = {};
-//     this.joinKeys = {};
-//     this.numJoins = 0;
-//   }
-
-//   addVertex(table) {
-//     this.tables[table.name] = table;
-//     this.joins[table.name] = {};
-//   }
-
-//   addEdge(col1, col2) {
-//     this.joins[col1.name] = col2;
-//     this.joins[col2].push(col1);
-//     this.numJoins++;
-//   }
-
-//   bfs(goal, root = this.tables[0]) {
-//     let join = this.joins;
-
-//     const queue = [];
-//     queue.push(root);
-
-//     const bFound = [];
-//     bFound[root] = true;
-
-//     const numJoins = [];
-//     numJoins[root] = 0;
-
-//     const found = [];
-//     found[root] = null;
-
-//     const buildPath = (goal, root, found) => {
-//       const stack = [];
-//       stack.push(goal);
-
-//       let u = found[goal];
-
-//       while(u != root) {
-//         stack.push(u);
-//         u = found[u];
-//       }
-
-//       stack.push(root);
-
-//       let path = stack.reverse().join('-');
-
-//       return path;
-//     }
-
-
-//     while(queue.length) {
-//       let v = queue.shift();
-
-//       if (v === goal) {
-//         return {
-//           distance: numJoins[goal],
-//           path: buildPath(goal, root, found)
-//         };
-//       }
-
-//       for (let i = 0; i < join[v].length; i++) {
-//         if (!bFound[join[v][i]]) {
-//           bFound[join[v][i]] = true;
-//           queue.push(join[v][i]);
-//           numJoins[join[v][i]] = numJoins[v] + 1;
-//           found[join[v][i]] = v;
-//         }
-//       }
-//     }
-
-//     return false;
-//   }
-
-// }
 
 module.exports.Database = Database;
 module.exports.Table = Table;
