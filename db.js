@@ -187,15 +187,19 @@ class Graph { // ORIG
       stack.push(root);
       let shortPath = stack.join(' <-> ');
       let longPath = stack;
-      let lines = ['FROM ' + longPath[0]];
+      let alias = makeAlias(namesInc, this.tablesData[longPath[0]].name, namesAlias);
+      let lines = [`FROM ${this.tablesData[longPath[0]].getPath()} [${alias}]`];
       longPath = lines.concat(longPath.map((n, i) => {
         if (i+1 < longPath.length) {
           let t1 = this.tablesData[n];
           let t2 = this.tablesData[longPath[i+1]];
           let alias1 = makeAlias(namesInc, t1.name, namesAlias);
+          console.log(namesInc);
+          console.log(namesAlias);
           let alias2 = makeAlias(namesInc, t2.name, namesAlias);
 
           console.log(namesInc);
+          console.log(namesAlias);
 
           console.log(alias1);
           console.log(alias2);
@@ -206,12 +210,13 @@ class Graph { // ORIG
           let c1 = t2.joins[t1.name].columns[0];
           let c2 = t1.joins[t2.name].columns[0];
           let result = '';
-          result = 'JOIN ' + t2.getPath() + alias1 + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
+          // result = 'JOIN ' + t2.getPath() + alias1 + ' ON ' + c1.getPath() + ' = ' + c2.getPath();
+          result = `JOIN ${t2.getPath()} [${alias2}] ON [${alias1}].[${c1.name}] = [${alias2}].[${c2.name}]`;
 
           for (let j=1; j < t2.joins[t1.name].columns.length; j++) {
             c1 = t2.joins[t1.name].columns[j];
             c2 = t1.joins[t2.name].columns[j];
-            result += '\nAND ' + c1.getPath() + ' = ' + c2.getPath();
+            result += `\nAND  [${alias2}].[${c2.name}] = [${alias1}].[${c1.name}]`;
           }
 
           return result;

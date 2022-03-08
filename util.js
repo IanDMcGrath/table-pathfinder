@@ -28,17 +28,18 @@ const abbreviateName = (name) => {
 const dupNameIncrement = (names, n) => {
   if (names[n]) {
     names[n] += 1;
-    n += names[n]; // append number to alias if duplicate name
+    n += names[n].toString(); // append number to alias if duplicate name
   } else {
     names[n] = 1;
   }
+  return n;
 }
 
 const makeAlias = (countObj, name, aliasesObj) => {
   if (aliasesObj[name]) return aliasesObj[name]; // if there's already an alias, return it
 
-  let alias = abbreviateName(name); // create abbreviation
-  dupNameIncrement(countObj, alias); // append number if alias already exists
+  let alias = abbreviateName(name).toLowerCase(); // create abbreviation
+  alias = dupNameIncrement(countObj, alias); // append number if alias already exists
 
   aliasesObj[name] = alias; // store name:alias
 
