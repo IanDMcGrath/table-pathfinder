@@ -14,6 +14,7 @@ const abbreviateName = (name) => {
     bChange = BREAKCHARS.includes(name[i]);
   }
 
+  newName = newName.slice(1,newName.length); // I added t_ to all my table names and I wanted to chop that off the abbreviation
   let abr = '';
 
   for (let i in newName) {

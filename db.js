@@ -124,6 +124,9 @@ class Table {
     } else {
       table2.joins[this.name] = {table: this, columns: [col1]};
     }
+    if (col1.dataType !== col2.dataType) {
+      console.log(`WARNING!: Tables joined but dataTypes don't match: ${col1.getPath()} ${col1.dataType} and ${col2.getPath()} ${col2.dataType}`);
+    }
   }
 }
 
