@@ -58,7 +58,7 @@ class Database {
     } {
       path = `[${name}]`;
     }
-    return path;
+    return path + '.[dbo]';
   }
 
   setParent(db) {
@@ -197,19 +197,9 @@ class Graph { // ORIG
           let t1 = this.tablesData[n];
           let t2 = this.tablesData[longPath[i+1]];
           let alias1 = makeAlias(namesInc, t1.name, namesAlias);
-          console.log(namesInc);
-          console.log(namesAlias);
+
           let alias2 = makeAlias(namesInc, t2.name, namesAlias);
 
-          console.log(namesInc);
-          console.log(namesAlias);
-
-          console.log(alias1);
-          console.log(alias2);
-          // console.log(`t1 name = ${t1.name}`);
-          // console.log(`t1 name = ${t2.name}`);
-          // console.log(t1.joins[t2.name].table.name);
-          // console.log(t2.joins[t1.name].table.name);
           let c1 = t2.joins[t1.name].columns[0];
           let c2 = t1.joins[t2.name].columns[0];
           let result = '';
